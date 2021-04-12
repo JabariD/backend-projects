@@ -12,7 +12,7 @@ The user can specify options (include numbers? include letters? mix case? includ
 - NOTE: Rules muse be followed. For example, if the user sets include letters to false, then by default numbers must be selected. Or if the user 
   - These rules were found by following standards of [Norton Password Generator](https://my.norton.com/extspa/passwordmanager?path=pwd-gen).
 
-- When the user clicks the generate button, the program simply shoves all the valid characters (based on user's true/false selections) and shoves them into an array and then selects a random character.
+When the user clicks the generate button, the program simply shoves all the valid characters (based on user's true/false selections) and shoves them into an array and then selects a random character.
 
 
 ## Improvements
