@@ -1,5 +1,5 @@
 # Elevator Simulator Xtreme
-Last Updated: 2021-07-17
+Last Updated: 2021-08-06
 Reviewers: N/A
 **Draft** | Review | Final
 
@@ -41,6 +41,13 @@ Based on the objective, backend design principles want to be practiced. TypeScri
 
  - This is primarily used to allow us to have a better GUI to show 1) Elevator messages i.e. "Elevator arrived on Floor 2." and 2) People messages. "Person X has pressed the Elevator Button on Floor 2."
 
+#### The Concept of Time
+It's important to understand that this is a "simulation". Meaning you won't actually have to wait in a real-evelavtor to go up 100 floors. We will simulate versions of time.
+
+For the sake of this program... 1mph in real time ~ .5ms in simulation time. (See Gloabl > ELEVATOR_MAX_SPEED for more details). 
+
+ - Metrics are then calculated as X simulation time * 10 = ?
+
 ### "Watch-only" Game-Mode
 This will be the first-mode that is created. 
 ##### User
@@ -57,21 +64,29 @@ Global variables will include:
  - uint32 MAX_FLOOR
  - enum BUSYNESS (LEVEL_1, LEVEL_2, LEVEL_3)
  - uint32 ELEVATOR_MAX_SPEED 
-	 - Note: Elevator's Max Speed is rarely used in the real-word because of acceleration and other [physics/mathly concepts](https://www.phoenixmodularelevator.com/elevator-speed/). This field is used to 
+	 - Note: Elevator's Max Speed is rarely used in the real-word because of acceleration and other [physics/mathly concepts](https://www.phoenixmodularelevator.com/elevator-speed/). This field is used mainly to be used for how long the elevator should WAIT i.e. "going 1 floor up --> wait 1/1 1ms=1mph in simulation time ~ 5s." = 3mph
  - uint32 ELEVATOR_CAPACITY
 
 ##### People (Elevator Customers)
-People are represent as a struct and contain the most important fields: 
+People are represented as a struct and contain the most important fields: 
  - ID
  - Floor src
+ - Desired Direction (UP or DOWN)
  - Floor dest
-
-For metrics, People will also contain, wait_time to begin with
+ - [Metrics]
+	 - Wait time (starts at time entered queue and ends when leaves queue)
 
 ##### Elevator
-The elevator will use it's own queue data structure to manage People nodes. 
+The elevator will use it's own queue data structure = people on the elevator. (INSIDE QUEUE)
+The elevator also uses a queue data structure = people on the outside of the elevator who have pressed the button. (OUTSIDE QUEUE)
+The elevator will use = it's current destinations
 
-The elevator will start on Floor 0.
+The elevator will start on Floor 0. 
+- The basic behavior of the elevator to go to the next person on the OUTSIDE QUEUE and enque to them the INSIDE QUEUE.
+- On the way to the destination, on each Floor, that the Elevator travels by, it will check if this Floor's Desired Direction is the same as it's going. If yes, then allow every one on this floor onto the INSIDE QUEUE.
+
+
+
 
 ### "User" Game-Mode
 In this mode, the user has full control of the elevator and decides who goes where. Depending on 3 busyness (1, 2, 3) elevator customers randomly appear on different floors at a specific rate. Each customer has 
