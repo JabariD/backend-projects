@@ -71,20 +71,47 @@ Global variables will include:
 People are represented as a struct and contain the most important fields: 
  - ID
  - Floor src
- - Desired Direction (UP or DOWN)
  - Floor dest
- - [Metrics]
+ - [Metrics]added later
 	 - Wait time (starts at time entered queue and ends when leaves queue)
 
 ##### Elevator
-The elevator will use it's own queue data structure = people on the elevator. (INSIDE QUEUE)
-The elevator also uses a queue data structure = people on the outside of the elevator who have pressed the button. (OUTSIDE QUEUE)
-The elevator will use = it's current destinations
+The elevator will use a queue data structure = people on the elevator. (INSIDE QUEUE)
+The elevator will use another queue data structure = people on the outside of the elevator who have pressed the button. (OUTSIDE QUEUE)
+The elevator will use a Min Heap (going up) and Max Heap (going down) depending if it's going UP or DOWN = it's current destinations.
 
 The elevator will start on Floor 0. 
-- The basic behavior of the elevator to go to the next person on the OUTSIDE QUEUE and enque to them the INSIDE QUEUE.
-- On the way to the destination, on each Floor, that the Elevator travels by, it will check if this Floor's Desired Direction is the same as it's going. If yes, then allow every one on this floor onto the INSIDE QUEUE.
+- The basic behavior of the elevator is: Go to the next person on the OUTSIDE QUEUE and enqueue them to the INSIDE QUEUE.
+- Depending on the directon, it gets it's next destination by Min Heap or Max Heap. As the elevator passes each Floor that the Elevator travels by, it will check if this Floor's Desired Direction is the same as it's going. If yes, then allow every one on this floor onto the INSIDE QUEUE and insert into Min Heap.
 
+So in summary:
+- Variables 
+	- private array of queues (each floor will get a queue)
+	- private queue
+	- min heap (up)
+	- max heap (down)
+	- bool direction
+	- elevator_capacity
+- Methods
+	- arrive at destination
+		- pick people up
+		- let people off
+	- go to next destination
+
+Example 1:
+1. Start on Floor 0.
+2. Randomly generated: Tim (0, UP, 20). Tim gets enqueued to queue on Floor 0.
+3. Enqueue Tim on Elevator. Set direction UP. Insert into MinHeap 20.
+4. Starting at current Elevator position (0), for loop to current MinHeap (20). If any array value (floor) is going 1 (UP) then get the first people in that (floor) going up. (that doesn't reach capacity.)
+5. Everyone who has destination 20 are left off.
+
+
+Example 2:
+- Start on Floor 0.
+- Randomly generated: Tim (5, UP, 20) and Alice (5, DOWN, 3). Both get enqueued to queue at floor 5.
+- Tim gets in first. Set direction UP. Insert into MinHeap 20. Not at capacity. Calculate that Alice is going down, therefore she does not go in, but we have a flag that states when set, we must go back to that floor. (we could just keep going up forever if people come on at the right time).
+- Starting at current Elevator position (5), for loop to current Minheap (20). if any array value (floor) has people going (UP) and not at capacity then the first people in that (floor) will go up.
+- 
 
 
 
