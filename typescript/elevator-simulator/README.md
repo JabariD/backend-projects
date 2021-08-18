@@ -1,5 +1,5 @@
 # Elevator Simulator Xtreme
-Last Updated: 2021-08-06
+Last Updated: 2021-08-18
 Reviewers: N/A
 **Draft** | Review | Final
 
@@ -9,6 +9,9 @@ Reviewers: N/A
 To run Elevator Simulator Xtreme follow these steps simply go to the Github webpage link located in this repo.
 
 No additional setup required. ENJOY!
+
+## How to Test
+Sim
 
 ## Objective
 a
@@ -49,9 +52,11 @@ For the sake of this program... 1mph in real time ~ .5ms in simulation time. (Se
  - Metrics are then calculated as X simulation time * 10 = ?
 
 ### "Watch-only" Game-Mode
+See [How Elevator Makes Decisions](https://science.howstuffworks.com/transport/engines-equipment/elevator7.htm). For the sake of this project, it will be simple, but inflexible i.e. it will continue to go up until all requests are fulfilled.
+
 This will be the first-mode that is created. 
 ##### User
-The user will be able to specify 
+The user will be able to specify:
  - the building capacity's size (how many floors),
  - busyness of the elevator (3 levels: 1, 2, 3), 
 	 - This controls how often "People" will spawn at random floors.
@@ -77,11 +82,11 @@ People are represented as a struct and contain the most important fields:
 
 ##### Elevator
 The elevator will use a queue data structure = people on the elevator. (INSIDE QUEUE)
-The elevator will use another queue data structure = people on the outside of the elevator who have pressed the button. (OUTSIDE QUEUE)
+Each floor will have a queue data structure = people on the outside of the elevator who have pressed the button. (OUTSIDE QUEUE)
 The elevator will use a Min Heap (going up) and Max Heap (going down) depending if it's going UP or DOWN = it's current destinations.
 
 The elevator will start on Floor 0. 
-- The basic behavior of the elevator is: Go to the next person on the OUTSIDE QUEUE and enqueue them to the INSIDE QUEUE.
+- The basic behavior of the elevator is: Go to the next person on this floor's OUTSIDE QUEUE and enqueue them to the INSIDE QUEUE if they are going up.
 - Depending on the directon, it gets it's next destination by Min Heap or Max Heap. As the elevator passes each Floor that the Elevator travels by, it will check if this Floor's Desired Direction is the same as it's going. If yes, then allow every one on this floor onto the INSIDE QUEUE and insert into Min Heap.
 
 So in summary:
@@ -111,7 +116,6 @@ Example 2:
 - Randomly generated: Tim (5, UP, 20) and Alice (5, DOWN, 3). Both get enqueued to queue at floor 5.
 - Tim gets in first. Set direction UP. Insert into MinHeap 20. Not at capacity. Calculate that Alice is going down, therefore she does not go in, but we have a flag that states when set, we must go back to that floor. (we could just keep going up forever if people come on at the right time).
 - Starting at current Elevator position (5), for loop to current Minheap (20). if any array value (floor) has people going (UP) and not at capacity then the first people in that (floor) will go up.
-- 
 
 
 
@@ -138,10 +142,11 @@ To allow for efficient
 ## Timeline
 |Functionality|Time  |
 |--|--|
-|Design Doc  |1 SWE Week  |
-|Basic Watch-only| 1 SWE Month | 
-|Watch-only + more features | 2 SWE weeks
+|Design Doc  |1 SWE Month |
+|Basic Watch-only| 3 SWE Months | 
+|Watch-only + more features | 2 SWE Months
 
 ## Future Enhancements
 
  - **Enhanced Frontend UI**: An enchanced Frontend UI will include animations, 
+ - **Add more complexity to the elevator's behavior:** For example, advanced elevators work based upon [patterns](https://science.howstuffworks.com/transport/engines-equipment/elevator7.htm).

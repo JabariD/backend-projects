@@ -1,0 +1,1 @@
+let MAX_FLOORS: number;
